@@ -15,4 +15,4 @@ jobs:
         run: npm install
 
       - name: Run Octa validation
-        run: npx octa ci
+        run: npm run octa ci
