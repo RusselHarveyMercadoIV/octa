@@ -6,10 +6,18 @@ export type DecisionVersion = {
   status: "active" | "deprecated";
 };
 
+export type EdgeType = "depends_on" | "enforces" | "violates" | "originates_from";
+
+export type Link = {
+  type: EdgeType;
+  target: string;
+};
+
 export type Decision = {
   id: string;
   title: string;
   history: DecisionVersion[];
+  links?: Link[];
 };
 
 export type Constraint = {
@@ -18,6 +26,7 @@ export type Constraint = {
   severity: "hard" | "soft";
   pattern: string;
   recommendation?: string;
+  links?: Link[];
 };
 
 export type IntentIndex = {

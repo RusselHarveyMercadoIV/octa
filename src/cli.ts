@@ -11,6 +11,7 @@ import { doctor } from "./commands/doctor.js";
 import { watch } from "./commands/watch.js";
 import { install } from "./commands/install.js";
 import { sync } from "./commands/sync.js";
+import { query } from "./commands/query.js";
 
 const [, , cmd, ...args] = process.argv;
 
@@ -66,6 +67,10 @@ async function main() {
       await sync();
       break;
 
+    case "query":
+      await query(args);
+      break;
+
     // --------------------
     // INITIALIZE
     // --------------------
@@ -85,7 +90,7 @@ async function main() {
     // --------------------
     default:
       console.log(`
-Octa CLI
+Usage: octa <command> [args]
 
 DECISIONS
   decision:add <id> <title> <choice> <reason>
@@ -101,6 +106,7 @@ SYSTEM
   watch
   install
   sync
+  query
       `);
   }
 }
