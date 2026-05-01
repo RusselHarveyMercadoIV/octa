@@ -64,7 +64,7 @@ async function main() {
       await validate();
       break;
 
-    case "doctor":
+    case "look":
       await doctor();
       break;
 
@@ -114,7 +114,7 @@ CONSTRAINTS
   constraint:add <id> <rule> <pattern> [recommendation]
 
 SYSTEM
-  doctor
+  look
   validate
   watch
   install
@@ -128,6 +128,5 @@ GOVERNANCE
       `);
   }
 }
-
 
 main();

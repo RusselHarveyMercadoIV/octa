@@ -17,6 +17,48 @@ export function inferDecisions(analysis: any) {
     });
   }
 
+  if (deps.includes("tailwindcss")) {
+    decisions.push({
+      id: "styling.framework",
+      title: "Use Tailwind CSS",
+      history: [{
+        version: 1,
+        choice: "Tailwind CSS",
+        reason: "Detected tailwindcss dependency",
+        timestamp: new Date().toISOString(),
+        status: "active"
+      }]
+    });
+  }
+
+  if (deps.includes("typescript")) {
+    decisions.push({
+      id: "language",
+      title: "Use TypeScript",
+      history: [{
+        version: 1,
+        choice: "TypeScript",
+        reason: "Detected typescript dependency",
+        timestamp: new Date().toISOString(),
+        status: "active"
+      }]
+    });
+  }
+
+  if (deps.includes("zustand")) {
+    decisions.push({
+      id: "state.management",
+      title: "Use Zustand",
+      history: [{
+        version: 1,
+        choice: "Zustand",
+        reason: "Detected zustand dependency",
+        timestamp: new Date().toISOString(),
+        status: "active"
+      }]
+    });
+  }
+
   if (deps.includes("express")) {
     decisions.push({
       id: "framework.backend",

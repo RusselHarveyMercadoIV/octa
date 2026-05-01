@@ -16,7 +16,12 @@ export function walk(dir: string, files: string[] = []) {
 
       if (stat.isDirectory()) {
         walk(full, files);
-      } else if (full.endsWith(".ts") || full.endsWith(".js")) {
+      } else if (
+        full.endsWith(".ts") ||
+        full.endsWith(".js") ||
+        full.endsWith(".tsx") ||
+        full.endsWith(".jsx")
+      ) {
         files.push(full);
       }
     }
