@@ -1,10 +1,18 @@
-name: Intent Validation
+name: Octa Architecture Check
 
-on: [push, pull_request]
+on:
+  pull_request:
+  push:
 
 jobs:
-  validate:
+  octa:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v3
-      - run: npx intentify validate
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run Octa validation
+        run: npx octa ci

@@ -5,6 +5,7 @@ import { getDecision } from "./commands/getDecision.js";
 import { addConstraint } from "./commands/addConstraint.js";
 import { validate } from "./commands/validate.js";
 import { init } from "./commands/init/init.js";
+import { ciValidate } from "./commands/ciValidate.js";
 
 const [, , cmd, ...args] = process.argv;
 
@@ -35,6 +36,11 @@ async function main() {
     // --------------------
     // SYSTEM
     // --------------------
+
+    case "ci":
+      await ciValidate();
+      break;
+
     case "validate":
       await validate();
       break;
