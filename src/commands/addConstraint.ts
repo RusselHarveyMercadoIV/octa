@@ -1,24 +1,24 @@
-import fs from "fs";
-import path from "path";
+import { writeJSON, constraintPath, addToIndex } from "../store.js";
 
 export async function addConstraint(args: string[]) {
   const [id, rule, pattern] = args;
 
-  const filePath = path.join(
-    process.cwd(),
-    "intent",
-    "constraints",
-    `${id}.json`,
-  );
+  if (!id || !rule || !pattern) {
+    console.error(
+      "Missing required arguments. Usage: constraint:add <id> <rule> <pattern>",
+    );
+    process.exit(1);
+  }
 
   const constraint = {
     id,
     rule,
     pattern,
+    severity: "hard" as const,
   };
 
-  fs.mkdirSync(path.dirname(filePath), { recursive: true });
-  fs.writeFileSync(filePath, JSON.stringify(constraint, null, 2));
+  writeJSON(constraintPath(id), constraint);
+  addToIndex("constraints", id);
 
   console.log(`✔ Constraint added: ${id}`);
 }

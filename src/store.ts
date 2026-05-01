@@ -20,3 +20,25 @@ export function readJSON(file: string) {
 export function decisionPath(id: string) {
   return path.join(BASE, "decisions", `${id}.json`);
 }
+
+export function constraintPath(id: string) {
+  return path.join(BASE, "constraints", `${id}.json`);
+}
+
+export const INDEX_PATH = path.join(BASE, "index.json");
+
+export function readIndex() {
+  return readJSON(INDEX_PATH) || { decisions: [], constraints: [] };
+}
+
+export function writeIndex(index: any) {
+  writeJSON(INDEX_PATH, index);
+}
+
+export function addToIndex(type: "decisions" | "constraints", id: string) {
+  const index = readIndex();
+  if (!index[type].includes(id)) {
+    index[type].push(id);
+    writeIndex(index);
+  }
+}

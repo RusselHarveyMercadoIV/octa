@@ -1,16 +1,9 @@
 import { scanRepo } from "../analyzer/scan.js";
-import fs from "fs";
-import path from "path";
-
-const intentPath = path.join(process.cwd(), "intent");
+import { readIndex, readJSON, constraintPath } from "../store.js";
 
 function loadConstraints() {
-  const dir = path.join(intentPath, "constraints");
-  if (!fs.existsSync(dir)) return [];
-
-  return fs
-    .readdirSync(dir)
-    .map((file) => JSON.parse(fs.readFileSync(path.join(dir, file), "utf-8")));
+  const index = readIndex();
+  return index.constraints.map((id: string) => readJSON(constraintPath(id)));
 }
 
 export async function validate() {

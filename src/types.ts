@@ -16,4 +16,10 @@ export type Constraint = {
   id: string;
   rule: string;
   severity: "hard" | "soft";
+  pattern: string;
+};
+
+export type IntentIndex = {
+  decisions: string[];
+  constraints: string[];
 };

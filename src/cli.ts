@@ -6,6 +6,7 @@ import { addConstraint } from "./commands/addConstraint.js";
 import { validate } from "./commands/validate.js";
 import { init } from "./commands/init/init.js";
 import { ciValidate } from "./commands/ciValidate.js";
+import { buildContext } from "./commands/context/buildContext.js";
 
 const [, , cmd, ...args] = process.argv;
 
@@ -50,6 +51,13 @@ async function main() {
     // --------------------
     case "init":
       await init();
+      break;
+
+    // --------------------
+    // CONTEXT
+    // --------------------
+    case "context":
+      await buildContext(args.join(" "));
       break;
 
     // --------------------

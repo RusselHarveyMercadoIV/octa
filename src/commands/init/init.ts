@@ -13,16 +13,30 @@ export async function init() {
   const decisions = inferDecisions(analysis);
   const constraints = inferConstraints(analysis);
 
-  const intent = generateIntent({ decisions, constraints });
+  generateIntent({ decisions, constraints });
 
-  const intentPath = path.join(process.cwd(), "intent");
-
+  const intentPath = path.join(process.cwd(), ".octa");
   fs.mkdirSync(intentPath, { recursive: true });
 
-  fs.writeFileSync(
-    path.join(intentPath, "bootstrap.json"),
-    JSON.stringify(intent, null, 2),
-  );
+  // Register decisions
+  const decisionsDir = path.join(intentPath, "decisions");
+  fs.mkdirSync(decisionsDir, { recursive: true });
+  decisions.forEach((d: any) => {
+    fs.writeFileSync(
+      path.join(decisionsDir, `${d.id}.json`),
+      JSON.stringify(d, null, 2),
+    );
+  });
+
+  // Register constraints
+  const constraintsDir = path.join(intentPath, "constraints");
+  fs.mkdirSync(constraintsDir, { recursive: true });
+  constraints.forEach((c: any) => {
+    fs.writeFileSync(
+      path.join(constraintsDir, `${c.id}.json`),
+      JSON.stringify(c, null, 2),
+    );
+  });
 
   console.log("✔ Intent system initialized");
   console.log(`- ${decisions.length} decisions inferred`);

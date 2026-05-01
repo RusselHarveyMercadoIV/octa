@@ -1,11 +1,13 @@
-import { writeJSON, decisionPath } from "../store.js";
+import { writeJSON, decisionPath, addToIndex } from "../store.js";
 import type { Decision } from "../types.js";
 
 export async function addDecision(args: string[]) {
   const [id, title, choice, reason] = args;
 
   if (!id || !title || !choice || !reason) {
-    console.error("Missing required arguments. Usage: add:decision <id> <title> <choice> <reason>");
+    console.error(
+      "Missing required arguments. Usage: add:decision <id> <title> <choice> <reason>",
+    );
     process.exit(1);
   }
 
@@ -24,6 +26,7 @@ export async function addDecision(args: string[]) {
   };
 
   writeJSON(decisionPath(id), decision);
+  addToIndex("decisions", id);
 
   console.log(`✔ Decision created: ${id}`);
 }
