@@ -2,27 +2,60 @@ import { addDecision } from "./commands/addDecision.js";
 import { updateDecision } from "./commands/updateDecision.js";
 import { getDecision } from "./commands/getDecision.js";
 
+import { addConstraint } from "./commands/addConstraint.js";
+import { validate } from "./commands/validate.js";
+
 const [, , cmd, ...args] = process.argv;
 
 async function main() {
   switch (cmd) {
-    case "add:decision":
+    // --------------------
+    // DECISIONS
+    // --------------------
+    case "decision:add":
       await addDecision(args);
       break;
 
-    case "update:decision":
+    case "decision:update":
       await updateDecision(args);
       break;
 
-    case "get:decision":
+    case "decision:get":
       await getDecision(args);
       break;
 
+    // --------------------
+    // CONSTRAINTS
+    // --------------------
+    case "constraint:add":
+      await addConstraint(args);
+      break;
+
+    // --------------------
+    // SYSTEM
+    // --------------------
+    case "validate":
+      await validate();
+      break;
+
+    // --------------------
+    // HELP
+    // --------------------
     default:
-      console.log("Commands:");
-      console.log("add:decision <id> <title> <choice> <reason>");
-      console.log("update:decision <id> <choice> <reason>");
-      console.log("get:decision <id>");
+      console.log(`
+Octa CLI
+
+DECISIONS
+  decision:add <id> <title> <choice> <reason>
+  decision:update <id> <choice> <reason>
+  decision:get <id>
+
+CONSTRAINTS
+  constraint:add <id> <rule> <pattern>
+
+SYSTEM
+  validate
+      `);
   }
 }
 
