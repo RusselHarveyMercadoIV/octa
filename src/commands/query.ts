@@ -116,8 +116,17 @@ function queryDecision(id: string, graph: IntentGraph) {
   }
 
   const d = node.data as Decision;
+  const latest = d.history[d.history.length - 1];
+
   console.log(`\n📚 Decision: ${id}`);
-  console.log(`Title: ${d.title}`);
+  console.log(`Title:  ${d.title}`);
+  
+  if (latest) {
+    console.log(`Status: ${latest.status.toUpperCase()}`);
+    console.log(`Choice: ${latest.choice}`);
+    console.log(`Reason: ${latest.reason}`);
+  }
+
   if (d.patterns && d.patterns.length > 0) {
     console.log(`Anchors: \`${d.patterns.join(", ")}\``);
   }

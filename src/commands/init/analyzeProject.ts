@@ -8,15 +8,18 @@ function readPkg() {
 }
 
 function walk(dir: string, files: string[] = []) {
-  for (const entry of fs.readdirSync(dir)) {
-    const full = path.join(dir, entry);
+  try {
+    for (const entry of fs.readdirSync(dir)) {
+      if (entry === "node_modules" || entry === ".git" || entry === ".octa") continue;
+      const full = path.join(dir, entry);
 
-    if (fs.statSync(full).isDirectory()) {
-      walk(full, files);
-    } else {
-      files.push(full);
+      if (fs.statSync(full).isDirectory()) {
+        walk(full, files);
+      } else {
+        files.push(full);
+      }
     }
-  }
+  } catch (e) {}
 
   return files;
 }
@@ -25,11 +28,12 @@ export function analyzeProject() {
   const pkg = readPkg();
   const files = walk(process.cwd());
 
-  const deps = pkg?.dependencies || {};
+  const deps = { ...(pkg?.dependencies || {}), ...(pkg?.devDependencies || {}) };
 
   return {
     packageJson: pkg,
     dependencies: Object.keys(deps),
+    scripts: Object.keys(pkg?.scripts || {}),
     files,
   };
 }

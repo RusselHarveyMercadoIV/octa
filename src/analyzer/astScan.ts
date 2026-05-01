@@ -1,14 +1,22 @@
 import fs from "fs";
+import path from "path";
 import ts from "typescript";
 
 export function scanFile(filePath: string) {
   const code = fs.readFileSync(filePath, "utf-8");
+
+  const extension = path.extname(filePath).toLowerCase();
+  const scriptKind = extension === ".tsx" ? ts.ScriptKind.TSX : 
+                    extension === ".jsx" ? ts.ScriptKind.JSX :
+                    extension === ".ts" ? ts.ScriptKind.TS :
+                    ts.ScriptKind.JS;
 
   const sourceFile = ts.createSourceFile(
     filePath,
     code,
     ts.ScriptTarget.Latest,
     true,
+    scriptKind
   );
 
   const imports: string[] = [];

@@ -17,7 +17,21 @@ Architectural decisions usually die in forgotten Markdown files or stale Wikis. 
 - **Reasoning**: It doesn't just block code; it explains _why_ a constraint exists.
 - **Inference**: It scans your code reality to discover emergent relationships between decisions and rules.
 - **Governance**: It manages the lifecycle of intent (Proposed → Active → Superseded).
-- **AI-Sync**: It automatically feeds your architecture into LLM context windows (`.cursorrules`), ensuring AI stays "within the guardrails."
+- **AI-Sync**: It automatically feeds your architecture into LLM context windows (`.cursorrules`, `.github/copilot-instructions.md`, `.agents/rules/`), ensuring AI stays "within the guardrails."
+
+---
+
+## 🖼 Octa in Action
+
+> [!TIP]
+> **Visualization**: See how Octa maps your code to your architectural intent.
+
+<!-- OCTA_SCREENSHOT_START -->
+
+![octa_look](image.png)
+_Screenshot: The `octa look` command identifying architectural drift and pending governance._
+
+<!-- OCTA_SCREENSHOT_END -->
 
 ---
 
@@ -61,7 +75,7 @@ Ask Octa about any file to see the architectural intent behind it, or run a doct
 
 ```bash
 octa query src/auth.ts
-octa doctor
+octa look
 ```
 
 ---
@@ -92,6 +106,13 @@ Inject your active decisions directly into Cursor, Copilot, and other AI assista
 octa sync
 ```
 
+<!-- OCTA_SCREENSHOT_SYNC_START -->
+
+![Octa AI Sync Placeholder](image-1.png)
+_Screenshot: Octa synchronizing architectural rules with Cursor, Copilot, and Antigravity agents._
+
+<!-- OCTA_SCREENSHOT_SYNC_END -->
+
 ### 4. Query the "Why"
 
 Ask Octa about any file or decision. It will use its **Inference Engine** to show you the impacted code and co-located rules.
@@ -100,34 +121,34 @@ Ask Octa about any file or decision. It will use its **Inference Engine** to sho
 octa query src/api/auth.ts
 ```
 
-### 5. Run the Doctor
+### 5. Look at your Health
 
-Check the health of your architecture. Octa detects drift and violations before they reach production.
+Check the health of your architecture. Octa detects drift, violations, and pending governance before they reach production.
 
 ```bash
-octa doctor
+octa look
 ```
 
 ## 🕹 Command Reference
 
-| Command                  | Description                                          | Flags / Options                                         |
-| :----------------------- | :--------------------------------------------------- | :------------------------------------------------------ |
-| `octa init`              | Initialize Octa in the current repository.           |                                                         |
-| `octa decision:add`      | Propose a new architectural decision.                | `--proposed`, `--patterns "list,of,tags"`               |
-| `octa decision:update`   | Update an existing decision with a new version.      | `--reason "why updating"`                               |
-| `octa decision:get <id>` | Retrieve the full history of a specific decision.    |                                                         |
-| `octa approve <id>`      | Promote a proposal to active policy.                 |                                                         |
-| `octa reject <id>`       | Formally reject a proposed decision.                 |                                                         |
-| `octa deprecate <id>`    | Mark a decision as legacy or superseded.             |                                                         |
-| `octa constraint:add`    | Add a new architectural constraint (linter rule).    | `--rule`, `--severity "hard\|soft"`, `--recommendation` |
-| `octa query <target>`    | Analyze the intent behind a file, decision, or rule. | `--json`                                                |
-| `octa doctor`            | Run a health check on architectural drift.           | `--json`                                                |
-| `octa sync`              | Synchronize your architecture with AI assistants.    |                                                         |
-| `octa validate`          | Manually run architectural constraint validation.    |                                                         |
-| `octa watch`             | Start a daemon that validates in real-time.          |                                                         |
-| `octa ci`                | Optimized validation for CI/CD pipelines.            |                                                         |
-| `octa context <query>`   | Build a custom context prompt for LLMs.              |                                                         |
-| `octa install`           | Install Octa as a pre-commit hook (via Husky).       |                                                         |
+| Command                  | Description                                                                      | Flags / Options                                         |
+| :----------------------- | :------------------------------------------------------------------------------- | :------------------------------------------------------ |
+| `octa init`              | Initialize Octa in the current repository.                                       |                                                         |
+| `octa decision:add`      | Propose a new architectural decision.                                            | `--proposed`, `--patterns "list,of,tags"`               |
+| `octa decision:update`   | Update an existing decision with a new version.                                  | `--reason "why updating"`                               |
+| `octa decision:get <id>` | Retrieve the full history of a specific decision.                                |                                                         |
+| `octa approve <id>`      | Promote a proposal to active policy.                                             |                                                         |
+| `octa reject <id>`       | Formally reject a proposed decision.                                             |                                                         |
+| `octa deprecate <id>`    | Mark a decision as legacy or superseded.                                         |                                                         |
+| `octa constraint:add`    | Add a new architectural constraint (linter rule).                                | `--rule`, `--severity "hard\|soft"`, `--recommendation` |
+| `octa query <target>`    | Analyze the intent behind a file, decision, or rule.                             | `--json`                                                |
+| `octa look`              | Run a health check on architectural drift and pending governance.                | `--json`                                                |
+| `octa sync`              | Synchronize your architecture with AI assistants (Cursor, Copilot, Antigravity). |                                                         |
+| `octa validate`          | Manually run architectural constraint validation.                                |                                                         |
+| `octa watch`             | Start a daemon that validates in real-time.                                      |                                                         |
+| `octa ci`                | Optimized validation for CI/CD pipelines.                                        |                                                         |
+| `octa context <query>`   | Build a custom context prompt for LLMs.                                          |                                                         |
+| `octa install`           | Install Octa as a pre-commit hook (via Husky).                                   |                                                         |
 
 ---
 
