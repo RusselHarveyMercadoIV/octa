@@ -1,25 +1,30 @@
 import { readIndex, readJSON, decisionPath, constraintPath } from "./store.js";
 import type { Decision, Constraint, Link } from "./types.js";
+import { walk } from "./analyzer/scan.js";
+import { scanFile } from "./analyzer/astScan.js";
+import path from "path";
 
 export type GraphNode = {
   id: string;
   type: "decision" | "constraint";
   data: Decision | Constraint;
-  outgoing: Link[];
-  incoming: Link[]; // Reverse edges for upstream traversal
+  impactedFiles: string[];
+  relatedNodes: Set<string>; // Inferred relationships
 };
 
 export class IntentGraph {
   private nodes: Map<string, GraphNode> = new Map();
 
   constructor() {
-    this.build();
+    // Note: async initialization is tricky in constructor, 
+    // but since build() is fast enough we can call it.
   }
 
-  private build() {
+  public async build() {
     const index = readIndex();
+    const projectFiles = walk(path.join(process.cwd(), "src"));
 
-    // 1. Load all nodes
+    // 1. Initialize Nodes
     index.decisions.forEach((id: string) => {
       const data = readJSON(decisionPath(id));
       if (data) {
@@ -27,8 +32,8 @@ export class IntentGraph {
           id,
           type: "decision",
           data,
-          outgoing: data.links || [],
-          incoming: [],
+          impactedFiles: [],
+          relatedNodes: new Set(),
         });
       }
     });
@@ -40,22 +45,42 @@ export class IntentGraph {
           id,
           type: "constraint",
           data,
-          outgoing: data.links || [],
-          incoming: [],
+          impactedFiles: [],
+          relatedNodes: new Set(),
         });
       }
     });
 
-    // 2. Build reverse edges for bidirectional reasoning
-    for (const node of this.nodes.values()) {
-      for (const link of node.outgoing) {
-        const targetNode = this.nodes.get(link.target);
-        if (targetNode) {
-          // Add reverse link to target
-          targetNode.incoming.push({
-            type: link.type,
-            target: node.id,
-          });
+    // 2. Discover Relationships from Code
+    for (const file of projectFiles) {
+      const scan = scanFile(file);
+      const relativePath = path.relative(process.cwd(), file);
+      
+      const fileDecisions: string[] = [];
+      const fileConstraints: string[] = [];
+
+      // Detect Decisions in this file
+      for (const node of this.nodes.values()) {
+        if (node.type === "decision") {
+          const d = node.data as Decision;
+          if (d.patterns?.some(p => scan.imports.some(i => i.includes(p)))) {
+            node.impactedFiles.push(relativePath);
+            fileDecisions.push(node.id);
+          }
+        } else {
+          const c = node.data as Constraint;
+          if (scan.imports.some(i => i.includes(c.pattern))) {
+            node.impactedFiles.push(relativePath);
+            fileConstraints.push(node.id);
+          }
+        }
+      }
+
+      // 3. Compute co-occurrence edges (Decision <-> Constraint)
+      for (const dId of fileDecisions) {
+        for (const cId of fileConstraints) {
+          this.nodes.get(dId)?.relatedNodes.add(cId);
+          this.nodes.get(cId)?.relatedNodes.add(dId);
         }
       }
     }
@@ -65,49 +90,12 @@ export class IntentGraph {
     return this.nodes.get(id);
   }
 
-  /**
-   * Trace why a node exists (Upstream)
-   * Follows outgoing links (e.g., Constraint -> Decision)
-   */
-  public getUpstream(id: string, depth = 0, visited = new Set<string>()): GraphNode[] {
-    if (depth >= 3 || visited.has(id)) return [];
-    visited.add(id);
-
+  public getInferredLinks(id: string): GraphNode[] {
     const node = this.nodes.get(id);
     if (!node) return [];
-
-    const upstream: GraphNode[] = [];
-    for (const link of node.outgoing) {
-      const parent = this.nodes.get(link.target);
-      if (parent) {
-        upstream.push(parent);
-        upstream.push(...this.getUpstream(parent.id, depth + 1, visited));
-      }
-    }
-
-    return upstream;
-  }
-
-  /**
-   * Trace what a node impacts (Downstream)
-   * Follows incoming (reverse) links (e.g., Decision -> Constraint)
-   */
-  public getDownstream(id: string, depth = 0, visited = new Set<string>()): GraphNode[] {
-    if (depth >= 3 || visited.has(id)) return [];
-    visited.add(id);
-
-    const node = this.nodes.get(id);
-    if (!node) return [];
-
-    const downstream: GraphNode[] = [];
-    for (const link of node.incoming) {
-      const child = this.nodes.get(link.target);
-      if (child) {
-        downstream.push(child);
-        downstream.push(...this.getDownstream(child.id, depth + 1, visited));
-      }
-    }
-
-    return downstream;
+    
+    return Array.from(node.relatedNodes)
+      .map(rid => this.nodes.get(rid))
+      .filter(Boolean) as GraphNode[];
   }
 }

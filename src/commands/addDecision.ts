@@ -3,7 +3,18 @@ import type { Decision, Link, EdgeType } from "../types.js";
 import { sync } from "./sync.js";
 
 export async function addDecision(args: string[]) {
-  // Parse links if present
+  // Parse patterns if present
+  let patterns: string[] = [];
+  const patternsIdx = args.indexOf("--patterns");
+  if (patternsIdx !== -1) {
+    const rawPatterns = args[patternsIdx + 1];
+    if (rawPatterns) {
+      patterns = rawPatterns.split(",");
+      args.splice(patternsIdx, 2);
+    }
+  }
+
+  // Parse links if present (legacy support)
   let links: Link[] = [];
   const linksIdx = args.indexOf("--links");
   if (linksIdx !== -1) {
@@ -38,6 +49,7 @@ export async function addDecision(args: string[]) {
         status: "active",
       },
     ],
+    patterns,
     links,
   };
 

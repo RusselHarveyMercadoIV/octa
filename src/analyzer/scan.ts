@@ -2,7 +2,7 @@ import fs from "fs";
 import path from "path";
 import { scanFile } from "./astScan.js";
 
-function walk(dir: string, files: string[] = []) {
+export function walk(dir: string, files: string[] = []) {
   for (const entry of fs.readdirSync(dir)) {
     if (entry === "node_modules" || entry.startsWith(".")) continue;
 

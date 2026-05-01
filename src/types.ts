@@ -17,6 +17,7 @@ export type Decision = {
   id: string;
   title: string;
   history: DecisionVersion[];
+  patterns?: string[];
   links?: Link[];
 };
 
