@@ -1,5 +1,6 @@
 import { readJSON, writeJSON, decisionPath } from "../store.js";
 import type { Decision, DecisionVersion } from "../types.js";
+import { sync } from "./sync.js";
 
 export async function updateDecision(args: string[]) {
   const [id, newChoice, reason] = args;
@@ -32,6 +33,8 @@ export async function updateDecision(args: string[]) {
   });
 
   writeJSON(decisionPath(id), decision);
+
+  await sync(true); // Auto-sync AI instructions silently
 
   console.log(`✔ Decision updated: ${id}`);
 }

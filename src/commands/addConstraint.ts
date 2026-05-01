@@ -1,4 +1,5 @@
 import { writeJSON, constraintPath, addToIndex } from "../store.js";
+import { sync } from "./sync.js";
 
 export async function addConstraint(args: string[]) {
   const [id, rule, pattern, recommendation] = args;
@@ -20,6 +21,8 @@ export async function addConstraint(args: string[]) {
 
   writeJSON(constraintPath(id), constraint);
   addToIndex("constraints", id);
+
+  await sync(true);
 
   console.log(`✔ Constraint added: ${id}`);
 }

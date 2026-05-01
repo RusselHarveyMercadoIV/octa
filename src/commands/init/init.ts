@@ -4,6 +4,7 @@ import { inferConstraints } from "./inferConstraints.js";
 import { generateIntent } from "./generateIntent.js";
 import fs from "fs";
 import path from "path";
+import { sync } from "../sync.js";
 
 export async function init() {
   console.log("🔍 Analyzing project...");
@@ -37,6 +38,8 @@ export async function init() {
       JSON.stringify(c, null, 2),
     );
   });
+
+  await sync(true); // Auto-sync AI instructions silently
 
   console.log("✔ Intent system initialized");
   console.log(`- ${decisions.length} decisions inferred`);

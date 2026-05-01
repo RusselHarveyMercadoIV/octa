@@ -10,6 +10,7 @@ import { buildContext } from "./commands/context/buildContext.js";
 import { doctor } from "./commands/doctor.js";
 import { watch } from "./commands/watch.js";
 import { install } from "./commands/install.js";
+import { sync } from "./commands/sync.js";
 
 const [, , cmd, ...args] = process.argv;
 
@@ -61,6 +62,10 @@ async function main() {
       await install();
       break;
 
+    case "sync":
+      await sync();
+      break;
+
     // --------------------
     // INITIALIZE
     // --------------------
@@ -95,6 +100,7 @@ SYSTEM
   validate
   watch
   install
+  sync
       `);
   }
 }

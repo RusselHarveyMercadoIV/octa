@@ -1,5 +1,6 @@
 import { writeJSON, decisionPath, addToIndex } from "../store.js";
 import type { Decision } from "../types.js";
+import { sync } from "./sync.js";
 
 export async function addDecision(args: string[]) {
   const [id, title, choice, reason] = args;
@@ -27,6 +28,8 @@ export async function addDecision(args: string[]) {
 
   writeJSON(decisionPath(id), decision);
   addToIndex("decisions", id);
+
+  await sync(true); // Auto-sync AI instructions silently
 
   console.log(`✔ Decision created: ${id}`);
 }
