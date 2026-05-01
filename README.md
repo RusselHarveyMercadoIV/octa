@@ -28,7 +28,8 @@ Architectural decisions usually die in forgotten Markdown files or stale Wikis. 
 
 <!-- OCTA_SCREENSHOT_START -->
 
-![octa_look](image.png)
+<img width="734" height="246" alt="image" src="https://github.com/user-attachments/assets/9d45c4f6-d503-43be-a823-b54a7c277043" />
+
 _Screenshot: The `octa look` command identifying architectural drift and pending governance._
 
 <!-- OCTA_SCREENSHOT_END -->
@@ -108,7 +109,8 @@ octa sync
 
 <!-- OCTA_SCREENSHOT_SYNC_START -->
 
-![Octa AI Sync Placeholder](image-1.png)
+<img width="627" height="89" alt="image" src="https://github.com/user-attachments/assets/de441e2d-2994-41b9-a396-d906f71fef84" />
+
 _Screenshot: Octa synchronizing architectural rules with Cursor, Copilot, and Antigravity agents._
 
 <!-- OCTA_SCREENSHOT_SYNC_END -->
