@@ -20,18 +20,38 @@ Architectural decisions usually die in forgotten Markdown files or stale Wikis. 
 
 ---
 
-## 🚀 Quick Start
+## 🚀 Getting Started
 
-Install Octa globally to start governing your projects:
+Follow these 5 steps to bring architectural reasoning to your project.
 
+### 1. Install Octa Globally
 ```bash
-npm install -g git+https://github.com/RusselHarveyMercadoIV/octa.git
+npm install -g @russelharvey/octa
 ```
 
-Initialize Octa in your repository:
-
+### 2. Initialize your Project
+Run this in the root of your repository to create the `.octa` registry and infer your baseline architecture.
 ```bash
 octa init
+```
+
+### 3. Define your first Decision
+Create a "Proposed" decision to set a new architectural direction.
+```bash
+octa decision:add auth.jwt "Use JWT" "Stateless tokens" "Scalability" --patterns jsonwebtoken --proposed
+```
+
+### 4. Approve and Sync
+Promote the decision to "Active." This will automatically record your git authorship and inject the rule into your AI assistants (`.cursorrules`).
+```bash
+octa approve auth.jwt
+```
+
+### 5. Verify and Reasoning
+Ask Octa about any file to see the architectural intent behind it, or run a doctor check to find drift.
+```bash
+octa query src/auth.ts
+octa doctor
 ```
 
 ---
