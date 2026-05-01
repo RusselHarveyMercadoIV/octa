@@ -1,4 +1,5 @@
 # ⬢ Octa
+<img width="1584" height="672" alt="octa_banner (1)" src="https://github.com/user-attachments/assets/598246b3-dd8b-4ce3-be95-efc69995870a" />
 
 ### The Architectural Reasoning Engine for AI-First Teams
 
