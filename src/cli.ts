@@ -12,6 +12,7 @@ import { watch } from "./commands/watch.js";
 import { install } from "./commands/install.js";
 import { sync } from "./commands/sync.js";
 import { query } from "./commands/query.js";
+import { approve, reject, deprecate } from "./commands/lifecycle.js";
 
 const [, , cmd, ...args] = process.argv;
 
@@ -30,6 +31,18 @@ async function main() {
 
     case "decision:get":
       await getDecision(args);
+      break;
+
+    case "approve":
+      await approve(args);
+      break;
+
+    case "reject":
+      await reject(args);
+      break;
+
+    case "deprecate":
+      await deprecate(args);
       break;
 
     // --------------------
@@ -107,6 +120,11 @@ SYSTEM
   install
   sync
   query
+
+GOVERNANCE
+  approve <id>
+  reject <id> [reason]
+  deprecate <id> [--replaced-by <new-id>]
       `);
   }
 }

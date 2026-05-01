@@ -42,6 +42,12 @@ These rules are actively enforced by CI/CD. Violations will break the build.
       md += `\n### ${d.id}: ${d.title}\n`;
       md += `- **Choice**: ${latest.choice}\n`;
       md += `- **Reason**: ${latest.reason}\n`;
+      if (d.patterns && d.patterns.length > 0) {
+        md += `- **Anchors**: \`${d.patterns.join(", ")}\`\n`;
+      }
+      if (d.supersedes && d.supersedes.length > 0) {
+        md += `- **Supersedes**: ${d.supersedes.join(", ")}\n`;
+      }
     }
   }
 

@@ -1,8 +1,16 @@
 import { writeJSON, decisionPath, addToIndex } from "../store.js";
-import type { Decision, Link, EdgeType } from "../types.js";
+import type { Decision, Link, EdgeType, DecisionStatus } from "../types.js";
 import { sync } from "./sync.js";
+import { getGitUser, getCurrentCommitHash } from "../git.js";
 
 export async function addDecision(args: string[]) {
+  // Parse proposed flag
+  let status: DecisionStatus = "active";
+  const proposedIdx = args.indexOf("--proposed");
+  if (proposedIdx !== -1) {
+    status = "proposed";
+    args.splice(proposedIdx, 1);
+  }
   // Parse patterns if present
   let patterns: string[] = [];
   const patternsIdx = args.indexOf("--patterns");
@@ -46,7 +54,9 @@ export async function addDecision(args: string[]) {
         choice,
         reason,
         timestamp: new Date().toISOString(),
-        status: "active",
+        status,
+        author: getGitUser(),
+        commitHash: getCurrentCommitHash(),
       },
     ],
     patterns,
