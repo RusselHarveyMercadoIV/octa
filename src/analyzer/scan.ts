@@ -1,10 +1,9 @@
 import fs from "fs";
 import path from "path";
+import { scanFile } from "./astScan.js";
 
 function walk(dir: string, files: string[] = []) {
-  const entries = fs.readdirSync(dir);
-
-  for (const entry of entries) {
+  for (const entry of fs.readdirSync(dir)) {
     const full = path.join(dir, entry);
 
     if (fs.statSync(full).isDirectory()) {
@@ -19,14 +18,6 @@ function walk(dir: string, files: string[] = []) {
 
 export function scanRepo() {
   const files = walk(process.cwd());
-  const content: { file: string; code: string }[] = [];
 
-  for (const file of files) {
-    content.push({
-      file,
-      code: fs.readFileSync(file, "utf-8"),
-    });
-  }
-
-  return content;
+  return files.map(scanFile);
 }

@@ -1,5 +1,4 @@
 import { scanRepo } from "../analyzer/scan.js";
-import { matchConstraint } from "../analyzer/matchRules.js";
 import fs from "fs";
 import path from "path";
 
@@ -9,9 +8,9 @@ function loadConstraints() {
   const dir = path.join(intentPath, "constraints");
   if (!fs.existsSync(dir)) return [];
 
-  return fs.readdirSync(dir).map((file) => {
-    return JSON.parse(fs.readFileSync(path.join(dir, file), "utf-8"));
-  });
+  return fs
+    .readdirSync(dir)
+    .map((file) => JSON.parse(fs.readFileSync(path.join(dir, file), "utf-8")));
 }
 
 export async function validate() {
@@ -22,11 +21,15 @@ export async function validate() {
 
   for (const file of files) {
     for (const constraint of constraints) {
-      if (matchConstraint(file.code, constraint.pattern)) {
+      // semantic match: check imports, not raw text
+      const matched = file.imports.some((i) => i.includes(constraint.pattern));
+
+      if (matched) {
         violations.push({
           file: file.file,
           constraint: constraint.id,
           rule: constraint.rule,
+          match: constraint.pattern,
         });
       }
     }
@@ -37,10 +40,11 @@ export async function validate() {
     return;
   }
 
-  console.log("⚠ Violations detected:\n");
+  console.log("⚠ Architecture drift detected:\n");
 
   for (const v of violations) {
     console.log(`- ${v.file}`);
-    console.log(`  violates: ${v.rule}\n`);
+    console.log(`  violates: ${v.rule}`);
+    console.log(`  matched: ${v.match}\n`);
   }
 }
