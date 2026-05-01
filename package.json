@@ -6,7 +6,8 @@
   "main": "index.js",
   "scripts": {
     "octa": "tsx src/cli.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "husky"
   },
   "repository": {
     "type": "git",
@@ -25,6 +26,9 @@
     "typescript": "^6.0.3"
   },
   "devDependencies": {
+    "@commitlint/cli": "^20.5.3",
+    "@commitlint/config-conventional": "^20.5.3",
+    "husky": "^9.1.7",
     "tsx": "^4.21.0"
   }
 }
