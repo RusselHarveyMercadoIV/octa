@@ -26,7 +26,7 @@ Follow these 5 steps to bring architectural reasoning to your project.
 
 ### 1. Install Octa Globally
 ```bash
-npm install -g @russelharvey/octa
+npm install -g @russelharveyiv/octa
 ```
 
 ### 2. Initialize your Project
