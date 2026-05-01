@@ -1,4 +1,5 @@
 # ⬢ Octa
+
 <img width="1584" height="672" alt="octa_banner (1)" src="https://github.com/user-attachments/assets/598246b3-dd8b-4ce3-be95-efc69995870a" />
 
 ### The Architectural Reasoning Engine for AI-First Teams
@@ -25,30 +26,39 @@ Architectural decisions usually die in forgotten Markdown files or stale Wikis. 
 Follow these 5 steps to bring architectural reasoning to your project.
 
 ### 1. Install Octa Globally
+
 ```bash
 npm install -g @russelharveyiv/octa
 ```
 
 ### 2. Initialize your Project
+
 Run this in the root of your repository to create the `.octa` registry and infer your baseline architecture.
+
 ```bash
 octa init
 ```
 
 ### 3. Define your first Decision
+
 Create a "Proposed" decision to set a new architectural direction.
+
 ```bash
 octa decision:add auth.jwt "Use JWT" "Stateless tokens" "Scalability" --patterns jsonwebtoken --proposed
 ```
 
 ### 4. Approve and Sync
+
 Promote the decision to "Active." This will automatically record your git authorship and inject the rule into your AI assistants (`.cursorrules`).
+
 ```bash
 octa approve auth.jwt
 ```
 
 ### 5. Verify and Reasoning
+
 Ask Octa about any file to see the architectural intent behind it, or run a doctor check to find drift.
+
 ```bash
 octa query src/auth.ts
 octa doctor
@@ -100,24 +110,24 @@ octa doctor
 
 ## 🕹 Command Reference
 
-| Command                  | Description                                                    |
-| :----------------------- | :------------------------------------------------------------- |
-| `octa init`              | Initialize Octa in the current repository.                     |
-| `octa decision:add`      | Propose a new architectural decision.                          |
-| `octa decision:update`   | Update an existing decision with a new version.                |
-| `octa decision:get <id>` | Retrieve the full history of a specific decision.              |
-| `octa approve <id>`      | Promote a proposal to active policy.                           |
-| `octa reject <id>`       | Formally reject a proposed decision.                           |
-| `octa deprecate <id>`    | Mark a decision as legacy or superseded.                       |
-| `octa constraint:add`    | Add a new architectural constraint (linter rule).              |
-| `octa query <target>`    | Analyze the intent behind a file, decision, or rule.           |
-| `octa doctor`            | Run a health check on architectural drift (supports `--json`). |
-| `octa sync`              | Synchronize your architecture with AI assistant context.       |
-| `octa validate`          | Manually run architectural constraint validation.              |
-| `octa watch`             | Start a daemon that validates architecture in real-time.       |
-| `octa ci`                | Optimized validation for CI/CD pipelines.                      |
-| `octa context <query>`   | Build a custom context prompt for LLMs based on a query.       |
-| `octa install`           | Install Octa as a pre-commit hook (via Husky).                 |
+| Command                  | Description                                          | Flags / Options                                         |
+| :----------------------- | :--------------------------------------------------- | :------------------------------------------------------ |
+| `octa init`              | Initialize Octa in the current repository.           |                                                         |
+| `octa decision:add`      | Propose a new architectural decision.                | `--proposed`, `--patterns "list,of,tags"`               |
+| `octa decision:update`   | Update an existing decision with a new version.      | `--reason "why updating"`                               |
+| `octa decision:get <id>` | Retrieve the full history of a specific decision.    |                                                         |
+| `octa approve <id>`      | Promote a proposal to active policy.                 |                                                         |
+| `octa reject <id>`       | Formally reject a proposed decision.                 |                                                         |
+| `octa deprecate <id>`    | Mark a decision as legacy or superseded.             |                                                         |
+| `octa constraint:add`    | Add a new architectural constraint (linter rule).    | `--rule`, `--severity "hard\|soft"`, `--recommendation` |
+| `octa query <target>`    | Analyze the intent behind a file, decision, or rule. | `--json`                                                |
+| `octa doctor`            | Run a health check on architectural drift.           | `--json`                                                |
+| `octa sync`              | Synchronize your architecture with AI assistants.    |                                                         |
+| `octa validate`          | Manually run architectural constraint validation.    |                                                         |
+| `octa watch`             | Start a daemon that validates in real-time.          |                                                         |
+| `octa ci`                | Optimized validation for CI/CD pipelines.            |                                                         |
+| `octa context <query>`   | Build a custom context prompt for LLMs.              |                                                         |
+| `octa install`           | Install Octa as a pre-commit hook (via Husky).       |                                                         |
 
 ---
 
