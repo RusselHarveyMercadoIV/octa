@@ -72,7 +72,7 @@ octa approve auth.jwt
 
 ### 5. Verify and Reasoning
 
-Ask Octa about any file to see the architectural intent behind it, or run a doctor check to find drift.
+Ask Octa about any file to see the architectural intent behind it, or run a look check to find drift.
 
 ```bash
 octa query src/auth.ts
