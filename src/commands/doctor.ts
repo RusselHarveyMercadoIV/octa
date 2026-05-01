@@ -5,7 +5,9 @@ import path from "path";
 
 function loadConstraints(): Constraint[] {
   const index = readIndex();
-  return index.constraints.map((id: string) => readJSON(constraintPath(id)));
+  return index.constraints
+    .map((id: string) => readJSON(constraintPath(id)))
+    .filter(Boolean);
 }
 
 export async function doctor() {

@@ -3,7 +3,9 @@ import { readIndex, readJSON, constraintPath } from "../store.js";
 
 function loadConstraints() {
   const index = readIndex();
-  return index.constraints.map((id: string) => readJSON(constraintPath(id)));
+  return index.constraints
+    .map((id: string) => readJSON(constraintPath(id)))
+    .filter(Boolean);
 }
 
 export async function validate() {

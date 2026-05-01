@@ -8,6 +8,8 @@ import { init } from "./commands/init/init.js";
 import { ciValidate } from "./commands/ciValidate.js";
 import { buildContext } from "./commands/context/buildContext.js";
 import { doctor } from "./commands/doctor.js";
+import { watch } from "./commands/watch.js";
+import { install } from "./commands/install.js";
 
 const [, , cmd, ...args] = process.argv;
 
@@ -51,6 +53,14 @@ async function main() {
       await doctor();
       break;
 
+    case "watch":
+      await watch();
+      break;
+
+    case "install":
+      await install();
+      break;
+
     // --------------------
     // INITIALIZE
     // --------------------
@@ -83,6 +93,8 @@ CONSTRAINTS
 SYSTEM
   doctor
   validate
+  watch
+  install
       `);
   }
 }
