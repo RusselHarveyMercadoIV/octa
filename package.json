@@ -1,16 +1,20 @@
 {
-  "name": "octa",
+  "name": "@russelharvey/octa",
   "version": "1.0.0",
-  "description": "",
+  "description": "Architectural reasoning and governance engine for AI-first teams.",
   "type": "module",
   "main": "./dist/cli.js",
   "bin": {
     "octa": "./bin/octa.js"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "tsc",
     "octa": "tsx src/cli.ts",
-    "prepare": "husky"
+    "prepare": "husky",
+    "prepublishOnly": "npm run build"
   },
   "files": [
     "dist",
