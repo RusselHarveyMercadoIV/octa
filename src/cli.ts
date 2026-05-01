@@ -4,6 +4,7 @@ import { getDecision } from "./commands/getDecision.js";
 
 import { addConstraint } from "./commands/addConstraint.js";
 import { validate } from "./commands/validate.js";
+import { init } from "./commands/init/init.js";
 
 const [, , cmd, ...args] = process.argv;
 
@@ -36,6 +37,13 @@ async function main() {
     // --------------------
     case "validate":
       await validate();
+      break;
+
+    // --------------------
+    // INITIALIZE
+    // --------------------
+    case "init":
+      await init();
       break;
 
     // --------------------
