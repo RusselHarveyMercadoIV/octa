@@ -4,6 +4,8 @@ import { scanFile } from "./astScan.js";
 
 function walk(dir: string, files: string[] = []) {
   for (const entry of fs.readdirSync(dir)) {
+    if (entry === "node_modules" || entry.startsWith(".")) continue;
+
     const full = path.join(dir, entry);
 
     if (fs.statSync(full).isDirectory()) {

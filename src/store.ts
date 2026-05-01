@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 
-const BASE = path.join(process.cwd(), "intent");
+const BASE = path.join(process.cwd(), ".octa");
 
 export function ensureDir(p: string) {
   if (!fs.existsSync(p)) fs.mkdirSync(p, { recursive: true });

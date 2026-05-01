@@ -1,11 +1,11 @@
 import { writeJSON, constraintPath, addToIndex } from "../store.js";
 
 export async function addConstraint(args: string[]) {
-  const [id, rule, pattern] = args;
+  const [id, rule, pattern, recommendation] = args;
 
   if (!id || !rule || !pattern) {
     console.error(
-      "Missing required arguments. Usage: constraint:add <id> <rule> <pattern>",
+      "Missing required arguments. Usage: constraint:add <id> <rule> <pattern> [recommendation]",
     );
     process.exit(1);
   }
@@ -15,6 +15,7 @@ export async function addConstraint(args: string[]) {
     rule,
     pattern,
     severity: "hard" as const,
+    ...(recommendation && { recommendation }),
   };
 
   writeJSON(constraintPath(id), constraint);

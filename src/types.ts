@@ -17,6 +17,7 @@ export type Constraint = {
   rule: string;
   severity: "hard" | "soft";
   pattern: string;
+  recommendation?: string;
 };
 
 export type IntentIndex = {

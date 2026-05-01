@@ -8,6 +8,8 @@ export function inferConstraints(analysis: any) {
       id: "no.redis",
       rule: "No Redis usage detected",
       pattern: "redis",
+      severity: "hard",
+      recommendation: "Remove Redis dependency or formalize a decision to adopt it.",
     });
   }
 
@@ -16,6 +18,8 @@ export function inferConstraints(analysis: any) {
       id: "api.structure",
       rule: "API routes detected - enforce separation of concerns",
       pattern: "direct db usage in routes",
+      severity: "soft",
+      recommendation: "Move business and DB logic to a dedicated /services layer.",
     });
   }
 

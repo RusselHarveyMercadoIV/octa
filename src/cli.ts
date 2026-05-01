@@ -7,6 +7,7 @@ import { validate } from "./commands/validate.js";
 import { init } from "./commands/init/init.js";
 import { ciValidate } from "./commands/ciValidate.js";
 import { buildContext } from "./commands/context/buildContext.js";
+import { doctor } from "./commands/doctor.js";
 
 const [, , cmd, ...args] = process.argv;
 
@@ -46,6 +47,10 @@ async function main() {
       await validate();
       break;
 
+    case "doctor":
+      await doctor();
+      break;
+
     // --------------------
     // INITIALIZE
     // --------------------
@@ -73,12 +78,14 @@ DECISIONS
   decision:get <id>
 
 CONSTRAINTS
-  constraint:add <id> <rule> <pattern>
+  constraint:add <id> <rule> <pattern> [recommendation]
 
 SYSTEM
+  doctor
   validate
       `);
   }
 }
+
 
 main();
