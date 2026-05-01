@@ -11,7 +11,8 @@ function loadConstraints(): Constraint[] {
 }
 
 export async function doctor() {
-  console.log("🩺 Running Octa Architecture Doctor...\n");
+  const isJson = process.argv.includes("--json");
+  if (!isJson) console.log("🩺 Running Octa Architecture Doctor...\n");
 
   const constraints = loadConstraints();
   const files = scanRepo();
@@ -27,28 +28,36 @@ export async function doctor() {
     }
   }
 
+  const hasHardViolations = violations.some((v) => v.constraint.severity === "hard");
+  const status = violations.length === 0 ? "HEALTHY" : "DRIFT DETECTED";
+  const riskLevel = violations.length === 0 ? "LOW" : (hasHardViolations ? "HIGH" : "MEDIUM");
+
+  if (isJson) {
+    console.log(JSON.stringify({
+      status,
+      riskLevel,
+      violations: violations.map(v => ({
+        file: path.relative(process.cwd(), v.file),
+        constraintId: v.constraint.id,
+        rule: v.constraint.rule
+      }))
+    }, null, 2));
+    return;
+  }
+
   console.log("----------------------------------------");
   console.log("🩺 Octa Architecture Health Report");
   console.log("----------------------------------------\n");
 
   if (violations.length === 0) {
-    console.log("Status: ✅ HEALTHY");
-    console.log("Risk Level: LOW\n");
+    console.log(`Status: ✅ ${status}`);
+    console.log(`Risk Level: ${riskLevel}\n`);
     console.log("No architectural drift detected. System is compliant.");
     return;
   }
 
-  console.log("Status: ⚠ DRIFT DETECTED");
-
-  const hasHardViolations = violations.some(
-    (v) => v.constraint.severity === "hard",
-  );
-  
-  if (hasHardViolations) {
-    console.log("Risk Level: 🚨 HIGH\n");
-  } else {
-    console.log("Risk Level: 🚸 MEDIUM\n");
-  }
+  console.log(`Status: ⚠ ${status}`);
+  console.log(`Risk Level: ${violations.length > 0 && hasHardViolations ? "🚨" : "🚸"} ${riskLevel}\n`);
 
   console.log("Violations:");
 

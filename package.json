@@ -3,11 +3,19 @@
   "version": "1.0.0",
   "description": "",
   "type": "module",
-  "main": "index.js",
+  "main": "./dist/cli.js",
+  "bin": {
+    "octa": "./bin/octa.js"
+  },
   "scripts": {
+    "build": "tsc",
     "octa": "tsx src/cli.ts",
     "prepare": "husky"
   },
+  "files": [
+    "dist",
+    "bin"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/RusselHarveyMercadoIV/octa.git"
