@@ -83,9 +83,18 @@ export async function sync(silent = false) {
   const copilotPath = path.join(githubDir, "copilot-instructions.md");
   fs.writeFileSync(copilotPath, mdPrompt);
 
+  // 3. Antigravity Agent Integration (Official Workspace Rules)
+  const agentsRulesDir = path.join(process.cwd(), ".agents", "rules");
+  if (!fs.existsSync(agentsRulesDir)) {
+    fs.mkdirSync(agentsRulesDir, { recursive: true });
+  }
+  const antigravityPath = path.join(agentsRulesDir, "octa-governance.md");
+  fs.writeFileSync(antigravityPath, mdPrompt);
+
   if (!silent) {
     console.log("✔ Injected constraints into .cursorrules");
     console.log("✔ Injected constraints into .github/copilot-instructions.md");
-    console.log("🎉 AI Assistants are now perfectly synced with your architecture!");
+    console.log("✔ Injected constraints into .agents/rules/octa-governance.md");
+    console.log("🎉 AI Assistants & Agents are now perfectly synced with your architecture!");
   }
 }
