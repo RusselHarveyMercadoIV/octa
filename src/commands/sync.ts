@@ -37,6 +37,7 @@ These rules are actively enforced by CI/CD. Violations will break the build.
   }
 
   for (const d of decisions) {
+    if (!d.history || d.history.length === 0) continue;
     const latest = d.history[d.history.length - 1];
     if (latest?.status === "active") {
       md += `\n### ${d.id}: ${d.title}\n`;

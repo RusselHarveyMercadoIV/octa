@@ -6,24 +6,42 @@ export function inferDecisions(analysis: any) {
   if (deps.includes("next")) {
     decisions.push({
       id: "framework.frontend",
-      choice: "Next.js",
-      reason: "Detected next dependency",
+      title: "Use Next.js",
+      history: [{
+        version: 1,
+        choice: "Next.js",
+        reason: "Detected next dependency",
+        timestamp: new Date().toISOString(),
+        status: "active"
+      }]
     });
   }
 
   if (deps.includes("express")) {
     decisions.push({
       id: "framework.backend",
-      choice: "Express.js",
-      reason: "Detected express dependency",
+      title: "Use Express.js",
+      history: [{
+        version: 1,
+        choice: "Express.js",
+        reason: "Detected express dependency",
+        timestamp: new Date().toISOString(),
+        status: "active"
+      }]
     });
   }
 
   if (deps.includes("prisma")) {
     decisions.push({
       id: "orm",
-      choice: "Prisma",
-      reason: "Detected Prisma usage",
+      title: "Use Prisma ORM",
+      history: [{
+        version: 1,
+        choice: "Prisma",
+        reason: "Detected Prisma usage",
+        timestamp: new Date().toISOString(),
+        status: "active"
+      }]
     });
   }
 
